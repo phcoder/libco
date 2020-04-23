@@ -34,7 +34,10 @@ void genode_free_secondary_stack(void *stack);
     #include "sjlj.c"
   #endif
 #elif defined(_MSC_VER)
-  #if defined(_M_IX86)
+  #include <Windows.h>
+  #if WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_APP)
+    #include "fiber.c"
+  #elif defined(_M_IX86)
     #include "x86.c"
   #elif defined(_M_AMD64)
     #include "amd64.c"
