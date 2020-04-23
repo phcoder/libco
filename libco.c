@@ -6,6 +6,11 @@
   #define LIBCO_MPROTECT
 #endif
 
+#ifdef __GENODE__
+void *genode_alloc_secondary_stack(unsigned long stack_size);
+void genode_free_secondary_stack(void *stack);
+#endif
+
 #if defined(__clang__) || defined(__GNUC__)
   #if defined(__i386__)
     #include "x86.c"

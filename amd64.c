@@ -142,13 +142,21 @@ cothread_t co_derive(void* memory, unsigned int size, void (*entrypoint)(void)) 
 }
 
 cothread_t co_create(unsigned int size, void (*entrypoint)(void)) {
+#ifdef __GENODE__
+  void* memory = genode_alloc_secondary_stack(size);
+#else
   void* memory = malloc(size);
+#endif
   if(!memory) return (cothread_t)0;
   return co_derive(memory, size, entrypoint);
 }
 
 void co_delete(cothread_t handle) {
+#ifdef __GENODE__
+  genode_free_secondary_stack(handle);
+#else
   free(handle);
+#endif
 }
 
 void co_switch(cothread_t handle) {
